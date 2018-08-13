@@ -1,0 +1,173 @@
+<div class="panel panel-block"> 
+    <div class="panel-heading">
+       <h4 class="panel-title"><i class="fa fa-area-chart"></i> Report Parameters</h4>
+    </div>
+    <div class="panel-body">
+        <div class="form-group date-range-picker ">
+            <label class="control-label" for="ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates">Date Range</label>    <a href="#" class="help" tab-index="-1">
+                <i class="fa fa-question-circle"></i>
+            </a>
+            <div class="alert alert-info help-message" style="display:none;">
+                <small>
+                    Choose the Batch Start Date to pull for the list.
+                </small>
+            </div>
+            <div class="control-wrapper">
+                <div id="ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates">
+                    <div class="form-control-group">
+                        <div class="input-group input-width-md date input-group-lower input-width-md js-date-picker date">
+                            <input name="drpDates_lower" type="text" id="drpDates_lower" class="form-control" value="{{ 'Now' | DateAdd:-7 | Date:'MM/dd/yyyy' }}">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span id="drpDates_lower_dav" class="validation-error help-inline" style="display:none;"></span>
+                        <div class="input-group form-control-static">
+                            to
+                        </div>
+                        <div class="input-group input-width-md date input-group-upper input-width-md js-date-picker date">
+                            <input name="drpDates_upper" type="text" id="drpDates_upper" class="form-control" value="{{ 'Now' | Date:'MM/dd/yyyy' }}">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span id="drpDates_upper_dav" class="validation-error help-inline" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group"><!-- Currency Type Selector -->
+            <label for="exampleFormControlSelect2">Currency Types</label> <a href="#" class="help" tab-index="-1">
+                <i class="fa fa-question-circle"></i>
+            </a>
+            <div class="alert alert-info help-message" style="display:none;">
+                <small>
+                    Choose which types of currencies will be included in the report, choosing more than one type could cause cause issues so be careful!
+                </small>
+            </div>
+            <select multiple="" class="form-control" id="CurrencyType" name="CurrencyType" style="height: 10em;">
+                {% sql return:'currencies'%}
+                SELECT
+                    dv.Id [Id],
+                    dv.Value [Value]
+                FROM [DefinedValue] dv
+                WHERE dv.DefinedTypeId = 10
+                ORDER BY dv.[Order] ASC;
+                {% endsql %}
+                {% for currency in currencies %}
+                    <option value="{{currency.Id}}">{{currency.Value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group"><!-- Transaction Type Selector -->
+            <label for="exampleFormControlSelect2">Transaction Types</label> <a href="#" class="help" tab-index="-1">
+                <i class="fa fa-question-circle"></i>
+            </a>
+            <div class="alert alert-info help-message" style="display:none;">
+                <small>
+                    Choose which types of transactions will be included in the report, choosing more than one type could cause cause issues so be careful!
+                </small>
+            </div>
+            <select multiple="" class="form-control" id="TransactionType" name="TransactionType" style="height: 10em;">
+                {% sql return:'transactiontypes'%}
+                SELECT
+                    dv.Id [Id],
+                    dv.Value [Value]
+                FROM [DefinedValue] dv
+                WHERE dv.DefinedTypeId = 12
+                ORDER BY dv.[Order] ASC;
+                {% endsql %}
+                {% for transactiontype in transactiontypes %}
+                    <option value="{{transactiontype.Id}}">{{transactiontype.Value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="actions margin-b-md">
+            <a id="aGo" class="btn btn-primary" href="javascript:showReport();">Go</a>
+        </div>
+    </div>
+<script language="javascript">
+​
+    $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-lower.date').datepicker({ format: 'mm/dd/yyyy', todayHighlight: true }).on('changeDate', function (ev) {
+        if (ev.date.valueOf() > $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').data('datepicker').dates[0]) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate() + 1);
+            $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').datepicker('update', newDate);
+            $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').datepicker('setStartDate', ev.date);
+        }
+        if (event && event.type == 'click') {
+            $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-lower.date').data('datepicker').hide();
+            $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-lower.date')[0].focus();
+        }
+    });
+​
+    $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').datepicker({ format: 'mm/dd/yyyy', todayHighlight: true }).on('changeDate', function (ev) {
+        $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').data('datepicker').hide();
+    });
+​
+    $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates').find('.input-group-lower .input-group-addon').on('click', function () {
+        $(this).siblings('.form-control').select();
+    });
+​
+    $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates').find('.input-group-upper .input-group-addon').on('click', function () {
+        $(this).siblings('.form-control').select();
+    });
+​
+    Rock.controls.datePicker.initialize({ id: 'drpDates_lower', startView: 0, format: 'mm/dd/yyyy', todayHighlight: true });
+    document.getElementById('drpDates_lower_dav').dispose = function() {
+        Array.remove(Page_Validators, document.getElementById('drpDates_lower_dav'));
+    }
+​
+    Rock.controls.datePicker.initialize({ id: 'drpDates_upper', startView: 0, format: 'mm/dd/yyyy', todayHighlight: true });
+​
+    document.getElementById('drpDates_upper_dav').dispose = function() {
+        Array.remove(Page_Validators, document.getElementById('drpDates_lower_dav'));
+    }
+​
+    var getParameterByName = function (name) {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+        var results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+​
+    window.showReport = function () {
+        var url = [location.protocol, '//', location.host, location.pathname].join('');
+        window.location = url + '?StartDate=' + $('#drpDates_lower').val() + '&EndDate=' + $('#drpDates_upper').val() + '&CurrencyType=' + $('#CurrencyType').val() + '&TransactionType=' + $('#TransactionType').val();
+    };
+​
+        var start = getParameterByName("StartDate");
+        var end = getParameterByName("EndDate");
+        var currency = getParameterByName("CurrencyType");
+        var transactiontype = getParameterByName("TransactionType");
+​
+    $(document).ready(function () {
+​
+        if(start) {
+            $('#drpDates_lower').datepicker("setDate", start);
+        }
+​
+        if(end) {
+            $('#drpDates_upper').datepicker("setDate", end);
+        }
+        
+        if(currency) {
+            let currencyArray = currency.split(',');
+            currencyArray.map(i => {
+                let opt = document.querySelector(`option[value="${i}"]`);
+                opt.setAttribute('selected', '');
+            });
+        }
+        if(transactiontype) {
+            let transactionArray = transactiontype.split(',');
+            transactionArray.map(i => {
+                let opt = document.querySelector(`option[value="${i}"]`);
+                opt.setAttribute('selected', '');
+            });
+        }
+    });
+</script>
+</div>
