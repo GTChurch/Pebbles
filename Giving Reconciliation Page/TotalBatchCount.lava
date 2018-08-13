@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Batches</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>Total Batches</td>
+      <td>{{row.Batches}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
