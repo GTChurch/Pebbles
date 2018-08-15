@@ -13,6 +13,8 @@ For your giving reconciliation page, you will want to create a page that uses th
 
 Next on your Giving Reconciliation Page, you will need to add an HTML block and a Dynamic data block to the sidebar of the page. These will become the report parameters pane, and the Total Batch count pane respectively, the latter of which is optional but our finance team wanted it so maybe yours will too. The main area of the page will need another Dynamic Data block which will become the actual list of Batches, accounts and income. 
 
+Be sure that in the HTML block on the page you give it SQL permissions, and Rock Entity permissions!!
+
 Finally, on each of the Dynamic Data blocks on this page you will need to add the following in the "Parameters" field... 
 `@StartDate=,@EndDate=,@CurrencyType=,@TransactionType=`. This will enable the block to get SQL Query parameters from the HTML block that controls the report start/enddate etc. The dynamic data block in the main section will also need `~/page/163?batchId={BatchId}` added, which will make each row clickable and take the user from the report page to the batch details page. 
 
@@ -28,3 +30,10 @@ The rest of the report setup should be pretty simple..
 * Paste the contents of `MainQuery.sql` into the SQL box of the Dynamic Data block in the main section of the page.
 * Paste the contents of `ReportParameters.lava` into the HTML block on the left side of the page
 * Paste the `TotalBatchCount.sql` and `TotalBatchCount.lava` into the Query and Lava Template sections of the Left Sidebar Dynamic Data block on the left.
+
+
+## Using the report page
+To run this report, first select a startdate and enddate in the report parameters block. Next select a Currency Type that you wish to find, and finally, select Transaction Source Types that you would like to list. The Currency type and Transaction Source Filters will tell the main query block to show only batches that contain transactions with those currency types and transaction types. 
+
+Click the Submit button and allow the page to refresh. You should see a query string at the top that includes `?StartDate=XXX&EndDate=XXX&CurrencyType=XXX&TransactionType=XXX` where the X's are replaced by your parameters. 
+To export the report to Excel, click the excel button at the bottom of the grid on the main query block.
