@@ -26,3 +26,5 @@ Navigate to that page and select "No" under the `Selection Query` Option. Then C
 ## Setting up the Giving Reconciliation Page Blocks
 The rest of the report setup should be pretty simple.. 
 * Paste the contents of `MainQuery.sql` into the SQL box of the Dynamic Data block in the main section of the page.
+* Paste the contents of `ReportParameters.lava` into the HTML block on the left side of the page
+* Paste the `TotalBatchCount.sql` and `TotalBatchCount.lava` into the Query and Lava Template sections of the Left Sidebar Dynamic Data block on the left.
