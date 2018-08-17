@@ -87,7 +87,7 @@
         </div>
     </div>
 <script language="javascript">
-​
+
     $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-lower.date').datepicker({ format: 'mm/dd/yyyy', todayHighlight: true }).on('changeDate', function (ev) {
         if (ev.date.valueOf() > $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').data('datepicker').dates[0]) {
             var newDate = new Date(ev.date)
@@ -100,30 +100,30 @@
             $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-lower.date')[0].focus();
         }
     });
-​
+
     $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').datepicker({ format: 'mm/dd/yyyy', todayHighlight: true }).on('changeDate', function (ev) {
         $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates .input-group-upper.date').data('datepicker').hide();
     });
-​
+
     $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates').find('.input-group-lower .input-group-addon').on('click', function () {
         $(this).siblings('.form-control').select();
     });
-​
+
     $('#ctl00_main_ctl23_ctl01_ctl06_gfTransactions_drpDates').find('.input-group-upper .input-group-addon').on('click', function () {
         $(this).siblings('.form-control').select();
     });
-​
+
     Rock.controls.datePicker.initialize({ id: 'drpDates_lower', startView: 0, format: 'mm/dd/yyyy', todayHighlight: true });
     document.getElementById('drpDates_lower_dav').dispose = function() {
         Array.remove(Page_Validators, document.getElementById('drpDates_lower_dav'));
     }
-​
+
     Rock.controls.datePicker.initialize({ id: 'drpDates_upper', startView: 0, format: 'mm/dd/yyyy', todayHighlight: true });
-​
+
     document.getElementById('drpDates_upper_dav').dispose = function() {
         Array.remove(Page_Validators, document.getElementById('drpDates_lower_dav'));
     }
-​
+
     var getParameterByName = function (name) {
         var url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -133,23 +133,23 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     };
-​
+
     window.showReport = function () {
         var url = [location.protocol, '//', location.host, location.pathname].join('');
         window.location = url + '?StartDate=' + $('#drpDates_lower').val() + '&EndDate=' + $('#drpDates_upper').val() + '&CurrencyType=' + $('#CurrencyType').val() + '&TransactionType=' + $('#TransactionType').val();
     };
-​
+
         var start = getParameterByName("StartDate");
         var end = getParameterByName("EndDate");
         var currency = getParameterByName("CurrencyType");
         var transactiontype = getParameterByName("TransactionType");
-​
+
     $(document).ready(function () {
-​
+
         if(start) {
             $('#drpDates_lower').datepicker("setDate", start);
         }
-​
+
         if(end) {
             $('#drpDates_upper').datepicker("setDate", end);
         }
@@ -171,3 +171,5 @@
     });
 </script>
 </div>
+
+
